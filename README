@@ -1,4 +1,19 @@
 Simple class for Arduino to control an inexpensive Chinese diesel heater through 443 MHz RF by using a TI CC1101 transceiver.
+
 Replicates the protocol used by the four button "red LCD remote" with an OLED screen, and should probably work if your heater supports this type of remote controller.
+
+You will need an ESP32 and TI CC1101 transceiver.
+
+Connect the SPI bus and GDO2 as follows:
+
+    ESP32         CC1101
+    -----         ------
+    4   <-------> GDO2
+    18  <-------> SCK
+    3v3 <-------> VCC
+    23  <-------> MOSI
+    19  <-------> MISO
+    5   <-------> CSn
+    GND <-------> GND
 
 Happy hacking!
