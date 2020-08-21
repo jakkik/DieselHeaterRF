@@ -4,6 +4,10 @@ Replicates the protocol used by the four button "red LCD remote" with an OLED sc
 
 You will need an ESP32 and TI CC1101 transceiver.
 
+I used an Ebyte E07-M1101S, but there are many different breakout modules that should also work.
+
+Link to E07-M1101S: https://www.aliexpress.com/item/32805699419.html
+
 Connect the SPI bus and GDO2 as follows:
 
     ESP32         CC1101
