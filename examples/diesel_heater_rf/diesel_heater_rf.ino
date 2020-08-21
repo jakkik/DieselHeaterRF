@@ -13,7 +13,7 @@
  */
 
 #include <SPI.h>
-#include "cc1101_heater.h"
+#include "DieselHeaterRF.h"
 
 #define SCK_PIN   18
 #define MISO_PIN  19
@@ -35,7 +35,7 @@ uint8_t sAutoMode    = 0;
 float sPumpFreq      = 0;
 int16_t sRssi        = 0;
 
-CC1101_Heater heater(SCK_PIN, MOSI_PIN, MISO_PIN, SS_PIN, GDO2_PIN);
+DieselHeaterRF heater(SCK_PIN, MOSI_PIN, MISO_PIN, SS_PIN, GDO2_PIN);
 
 void setup() {
 

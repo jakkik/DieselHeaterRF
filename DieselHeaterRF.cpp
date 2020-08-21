@@ -1,5 +1,5 @@
 /*
- * cc1101_heater.cpp
+ * DieselHeaterRF.cpp
  * Copyright (c) 2020 Jarno Kyttälä
  * 
  * ---------------------------------
@@ -16,9 +16,9 @@
 
 #include <Arduino.h>
 #include <SPI.h>
-#include "cc1101_heater.h"
+#include "DieselHeaterRF.h"
 
-void CC1101_Heater::begin(uint32_t heaterAddr) {
+void DieselHeaterRF::begin(uint32_t heaterAddr) {
 
   pinMode(_pinSck, OUTPUT);
   pinMode(_pinMosi, OUTPUT);
@@ -36,7 +36,7 @@ void CC1101_Heater::begin(uint32_t heaterAddr) {
 
 }
 
-bool CC1101_Heater::getState(uint8_t *state, uint8_t *power, float *voltage, int8_t *ambientTemp, int8_t *caseTemp, int8_t *setpoint, float *pumpFreq, uint8_t *autoMode, int16_t *rssi, uint32_t timeout) {
+bool DieselHeaterRF::getState(uint8_t *state, uint8_t *power, float *voltage, int8_t *ambientTemp, int8_t *caseTemp, int8_t *setpoint, float *pumpFreq, uint8_t *autoMode, int16_t *rssi, uint32_t timeout) {
 
   char buf[24];
 
@@ -62,7 +62,7 @@ bool CC1101_Heater::getState(uint8_t *state, uint8_t *power, float *voltage, int
 
 }
 
-void CC1101_Heater::sendCommand(uint8_t cmd, uint32_t addr, uint8_t numTransmits) {
+void DieselHeaterRF::sendCommand(uint8_t cmd, uint32_t addr, uint8_t numTransmits) {
 
   char buf[10];
 
@@ -91,7 +91,7 @@ void CC1101_Heater::sendCommand(uint8_t cmd, uint32_t addr, uint8_t numTransmits
 
 }
 
-uint32_t CC1101_Heater::findAddress(uint16_t timeout) {
+uint32_t DieselHeaterRF::findAddress(uint16_t timeout) {
 
   char buf[24];
 
@@ -104,7 +104,7 @@ uint32_t CC1101_Heater::findAddress(uint16_t timeout) {
 
 }
 
-uint32_t CC1101_Heater::parseAddress(char *buf) {
+uint32_t DieselHeaterRF::parseAddress(char *buf) {
   uint32_t address = 0;
   address |= (buf[2] << 24);
   address |= (buf[3] << 16);
@@ -113,7 +113,7 @@ uint32_t CC1101_Heater::parseAddress(char *buf) {
   return address;
 }
 
-bool CC1101_Heater::receivePacket(char *bytes, uint16_t timeout) {
+bool DieselHeaterRF::receivePacket(char *bytes, uint16_t timeout) {
 
   unsigned long t = millis();
   uint8_t rxLen;
@@ -162,7 +162,7 @@ bool CC1101_Heater::receivePacket(char *bytes, uint16_t timeout) {
 
 }
 
-void CC1101_Heater::initRadio() {
+void DieselHeaterRF::initRadio() {
 
   writeStrobe(0x30); // SRES
 
@@ -219,7 +219,7 @@ void CC1101_Heater::initRadio() {
  
 }
 
-void CC1101_Heater::txBurst(uint8_t len, char *bytes) {
+void DieselHeaterRF::txBurst(uint8_t len, char *bytes) {
     txFlush();
     //cc1101_writeReg(0x3F, len);
     writeBurst(0x7F, len, bytes);
@@ -227,30 +227,30 @@ void CC1101_Heater::txBurst(uint8_t len, char *bytes) {
     delay(16); 
 }
 
-void CC1101_Heater::txFlush() {
+void DieselHeaterRF::txFlush() {
   writeStrobe(0x36); // SIDLE
   writeStrobe(0x3B); // SFTX
   delay(16); // Needed to prevent TX underflow if bursting right after flushing
 }
 
-void CC1101_Heater::rx(uint8_t len, char *bytes) {
+void DieselHeaterRF::rx(uint8_t len, char *bytes) {
   for (int i = 0; i < len; i++) {
     bytes[i] = writeReg(0xBF, 0xFF);
   }
 }
 
-void CC1101_Heater::rxFlush() {
+void DieselHeaterRF::rxFlush() {
   writeStrobe(0x36); // SIDLE  
   writeReg(0xBF, 0xFF); // Dummy read to de-assert GDO2
   writeStrobe(0x3A); // SFRX
   delay(16);
 }
 
-void CC1101_Heater::rxEnable() {
+void DieselHeaterRF::rxEnable() {
   writeStrobe(0x34); // SRX  
 }
 
-uint8_t CC1101_Heater::writeReg(uint8_t addr, uint8_t val) {
+uint8_t DieselHeaterRF::writeReg(uint8_t addr, uint8_t val) {
   spiStart();
   SPI.transfer(addr);
   uint8_t tmp = SPI.transfer(val); 
@@ -258,7 +258,7 @@ uint8_t CC1101_Heater::writeReg(uint8_t addr, uint8_t val) {
   return tmp;
 }
 
-void CC1101_Heater::writeBurst(uint8_t addr, uint8_t len, char *bytes) {
+void DieselHeaterRF::writeBurst(uint8_t addr, uint8_t len, char *bytes) {
   spiStart();
   SPI.transfer(addr);
   for (int i = 0; i < len; i++) {
@@ -267,25 +267,25 @@ void CC1101_Heater::writeBurst(uint8_t addr, uint8_t len, char *bytes) {
   spiEnd();
 }
 
-void CC1101_Heater::writeStrobe(uint8_t addr) {
+void DieselHeaterRF::writeStrobe(uint8_t addr) {
   spiStart();
   SPI.transfer(addr);
   spiEnd();
 }
 
-void CC1101_Heater::spiStart() {
+void DieselHeaterRF::spiStart() {
   digitalWrite(_pinSs, LOW);
   while(digitalRead(_pinMiso));  
 }
 
-void CC1101_Heater::spiEnd() {
+void DieselHeaterRF::spiEnd() {
   digitalWrite(_pinSs, HIGH); 
 }
 
 /*
  * CRC-16/MODBUS
  */
-uint16_t CC1101_Heater::crc16_2(char *buf, int len) {
+uint16_t DieselHeaterRF::crc16_2(char *buf, int len) {
 
   uint16_t crc = 0xFFFF;
 

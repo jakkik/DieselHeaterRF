@@ -1,5 +1,5 @@
-#ifndef cc1101_heater_h
-#define cc1101_heater_h
+#ifndef DieselHeaterRF_h
+#define DieselHeaterRF_h
 
 #include <Arduino.h>
 
@@ -9,12 +9,12 @@
 #define HEATER_CMD_UP     0x3c
 #define HEATER_CMD_DOWN   0x3e
 
-class CC1101_Heater
+class DieselHeaterRF
 {
 
     public:
 
-        explicit CC1101_Heater(uint8_t sck, uint8_t miso, uint8_t mosi, uint8_t ss, uint8_t gdo2) { 
+        explicit DieselHeaterRF(uint8_t sck, uint8_t miso, uint8_t mosi, uint8_t ss, uint8_t gdo2) { 
             _pinSck = sck;
             _pinMiso = miso;
             _pinMosi = mosi;
@@ -22,7 +22,7 @@ class CC1101_Heater
             _pinGdo2 = gdo2;
         }
         
-        ~CC1101_Heater() {
+        ~DieselHeaterRF() {
         }        
 
         void begin(uint32_t heaterAddr);
