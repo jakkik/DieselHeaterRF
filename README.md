@@ -1,4 +1,4 @@
-### Simple library for Arduino for controlling inexpensive, unbranded Chinese diesel heaters through 433 MHz RF by using a TI CC1101 transceiver.
+### Simple Arduino library for controlling inexpensive, unbranded Chinese diesel heaters through 433 MHz RF by using a TI CC1101 transceiver.
 
 Replicates the protocol used by the four button "red LCD remote" with an OLED screen, and should probably work if your heater supports this type of remote controller.
 
