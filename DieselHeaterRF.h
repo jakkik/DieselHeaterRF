@@ -37,7 +37,7 @@ class DieselHeaterRF
 
         void begin(uint32_t heaterAddr);
 
-        bool getState(uint8_t *state, uint8_t *power, float *voltage, int8_t *ambientTemp, int8_t *caseTemp, int8_t *setpoint, float *pumpFreq, uint8_t *autoMode, int16_t *rssi, uint32_t timeout);
+        bool getState(uint8_t *state, uint8_t *power, float *voltage, int8_t *ambientTemp, uint8_t *caseTemp, int8_t *setpoint, float *pumpFreq, uint8_t *autoMode, int16_t *rssi, uint32_t timeout);
         void sendCommand(uint8_t cmd, uint32_t addr, uint8_t numTransmits);
         uint32_t findAddress(uint16_t timeout);
 
@@ -66,7 +66,6 @@ class DieselHeaterRF
         uint8_t _pinGdo2;
 
         uint32_t _heaterAddr;
-
 
         void spiStart(void);
         void spiEnd(void);
