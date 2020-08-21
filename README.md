@@ -19,21 +19,21 @@ Connect the SPI bus and GDO2 as follows:
 ### Features
 
 * Get current state of the heater, including:
-..* Heater power state
-..* Current temperature setpoint
-..* Current pump frequency setpoint
-..* Ambient temperature
-..* Heat exchanger temperature
-..* Operating mode (thermostat or fixed pump frequency)
-..* Power supply voltage
-..* Current state (glowing, heating, cooling...)
-..* RSSI of the received signal
+⋅⋅* Heater power state
+⋅⋅* Current temperature setpoint
+⋅⋅* Current pump frequency setpoint
+⋅⋅* Ambient temperature
+⋅⋅* Heat exchanger temperature
+⋅⋅* Operating mode (thermostat or fixed pump frequency)
+⋅⋅* Power supply voltage
+⋅⋅* Current state (glowing, heating, cooling...)
+⋅⋅* RSSI of the received signal
 
 * Commands
-..* Power on / off
-..* Temperature setpoint up / down (when in "auto", thermostat mode)
-..* Pump frequency up / down (when in "manual", fixed pump freq. mode)
-..* Operating mode auto / manual
+⋅⋅* Power on / off
+⋅⋅* Temperature setpoint up / down (when in "auto", thermostat mode)
+⋅⋅* Pump frequency up / down (when in "manual", fixed pump freq. mode)
+⋅⋅* Operating mode auto / manual
 
 * Pairing mode to find the heater address 
 
