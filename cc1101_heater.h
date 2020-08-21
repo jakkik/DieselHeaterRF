@@ -1,3 +1,6 @@
+#ifndef cc1101_heater_h
+#define cc1101_heater_h
+
 #include <Arduino.h>
 
 #define HEATER_CMD_WAKEUP 0x23
@@ -58,3 +61,5 @@ class CC1101_Heater
         uint16_t crc16_2(char *buf, int len);
 
 };
+
+#endif

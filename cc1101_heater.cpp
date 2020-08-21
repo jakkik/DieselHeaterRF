@@ -14,8 +14,8 @@
  * 
  */
 
-#include <SPI.h>
 #include <Arduino.h>
+#include <SPI.h>
 #include "cc1101_heater.h"
 
 void CC1101_Heater::begin(uint32_t heaterAddr) {
