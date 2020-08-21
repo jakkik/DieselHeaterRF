@@ -22,7 +22,7 @@ There is another project for controlling the heater that seems awesome and very 
 
 But if you’re like me, and you just want a simple way to control the heater the way you want without any expensive parts, or electrical connections to the heater's own control unit, this library might help you.
 
-I wanted a non-invasive way to control the heater, while maintaining the original functionality of the heater and remote controller(s). So I decided to sniff around by tapping into the SPI bus between the remote controller and transceiver chip. Using a logic analyzer, I studied the configuration of the radio and the protocol used between the heater and the remote. 
+I wanted a non-invasive way to control the heater, while maintaining the original functionality of the heater and remote controller(s). So I decided to sniff around by tapping into the SPI bus between the remote controller's MCU and the transceiver chip. Using a logic analyzer and the CC1101 datasheet, I studied the configuration of the radio and the protocol used between the heater and the remote. 
 
 Required parts can be obtained for less than $ 10 USD. I used an Ebyte E07-M1101S, but there are many different breakout modules that should also work.
 
