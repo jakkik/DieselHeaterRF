@@ -1,4 +1,4 @@
-### Simple Arduino library for controlling inexpensive, unbranded Chinese diesel heaters through 433 MHz RF by using a TI CC1101 transceiver.
+### Simple Arduino library for controlling and monitoring inexpensive, unbranded Chinese diesel heaters through 433 MHz RF by using a TI CC1101 transceiver.
 
 Replicates the protocol used by the four button "red LCD remote" with an OLED screen, and should probably work if your heater supports this type of remote controller.
 
@@ -16,11 +16,32 @@ Connect the SPI bus and GDO2 as follows:
     5   <-------> CSn
     GND <-------> GND
 
+### Features
+
+* Get current state of the heater, including:
+..* Heater power state
+..* Current temperature setpoint
+..* Current pump frequency setpoint
+..* Ambient temperature
+..* Heat exchanger temperature
+..* Operating mode (thermostat or fixed pump frequency)
+..* Power supply voltage
+..* Current state (glowing, heating, cooling...)
+..* RSSI of the received signal
+
+* Commands
+..* Power on / off
+..* Temperature setpoint up / down (when in "auto", thermostat mode)
+..* Pump frequency up / down (when in "manual", fixed pump freq. mode)
+..* Operating mode auto / manual
+
+* Pairing mode to find the heater address 
+
 ### Background information:
 
-There is another project for controlling the heater that seems awesome and very comprehensive, [Afterburner by Ray Jones](http://www.mrjones.id.au/afterburner/). 
+There is another project for a stand-alone device for controlling the heater that seems awesome and very comprehensive, [Afterburner by Ray Jones](http://www.mrjones.id.au/afterburner/). 
 
-But if you’re like me, and you just want a simple way to control the heater the way you want without any expensive parts or electrical connections to the heater's own control unit, and don't mind rolling out your own software, this library might help you.
+But if you’re like me, and you just want a simple way to control or monitor the heater without any expensive parts or electrical connections to the heater's own control unit, and don't mind rolling out your own software, this library might help you.
 
 I wanted a non-invasive way to control the heater, while maintaining the original functionality of the heater and remote controller(s). So I decided to sniff around by tapping into the SPI bus between the remote controller's MCU and the transceiver chip. Using a logic analyzer and the CC1101 datasheet, I studied the configuration of the radio and the protocol used between the heater and the remote. 
 
