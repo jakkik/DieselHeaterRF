@@ -23,7 +23,7 @@
 
 #define HEATER_POLL_INTERVAL  4000
 
-uint32_t heaterAddr = 0x56d24eae;
+uint32_t heaterAddr = 0x56d24eae; // Heater address is a 32 bit unsigned int. Use the findAddress() to get your heater's address.
 
 uint8_t sState       = 0;
 uint8_t sPower       = 0;
@@ -43,31 +43,32 @@ void setup() {
 
   heater.begin(heaterAddr);
 
-  // Test reading the CC1101 version number
-  uint8_t tmp = heater.writeReg(0xF1, 0xFF);
-  Serial.printf("CC1101 version is %d\n", tmp);
+  Serial.println("Started pairing, press and hold the DOWN button on the heater's LCD panel...");
 
-  // Transmit a wake-up message (twice, even though the real remote does it three times)
-  for (int i = 0; i < 2; i++) {
-    heater.sendCommand(HEATER_CMD_WAKEUP, heaterAddr, 15);
-  }
+  uint32_t address = heater.findAddress(60000UL);
 
-  while (1) {
-
-    heater.sendCommand(HEATER_CMD_WAKEUP, heaterAddr, 10);
-
-    if (heater.getState(&sState, &sPower, &sVoltage, &sAmbientTemp, &sCaseTemp, &sSetpoint, &sPumpFreq, &sAutoMode, &sRssi, 1000)) {
-      Serial.printf("State: %d, Power: %d, Voltage: %f, Ambient: %d, Case: %d, Setpoint: %d, PumpFreq: %f, Auto: %d, RSSI: %d\n", sState, sPower, sVoltage, sAmbientTemp, sCaseTemp, sSetpoint, sPumpFreq, sAutoMode, sRssi); 
-    } else {
-      Serial.println("Failed to get the state");
-    }
-    
-    delay(HEATER_POLL_INTERVAL);
-
+  if (address) {
+    heaterAddr = address;
+    Serial.print("Got address: ");
+    Serial.println(address, HEX);
+    // Store the address somewhere, eg. NVS
+  } else {
+    Serial.println("Failed to find a heater");   
+    while(1) {}
   }
   
 }
 
 void loop() {
+
+  heater.sendCommand(HEATER_CMD_WAKEUP, heaterAddr, 10);
+
+  if (heater.getState(&sState, &sPower, &sVoltage, &sAmbientTemp, &sCaseTemp, &sSetpoint, &sPumpFreq, &sAutoMode, &sRssi, 1000)) {
+    Serial.printf("State: %d, Power: %d, Voltage: %f, Ambient: %d, Case: %d, Setpoint: %d, PumpFreq: %f, Auto: %d, RSSI: %d\n", sState, sPower, sVoltage, sAmbientTemp, sCaseTemp, sSetpoint, sPumpFreq, sAutoMode, sRssi); 
+  } else {
+    Serial.println("Failed to get the state");
+  }
+  
+  delay(HEATER_POLL_INTERVAL);
 
 }
