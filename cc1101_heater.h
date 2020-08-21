@@ -11,20 +11,6 @@
 
 class CC1101_Heater
 {
-    private:
-
-        uint8_t _pinSck;
-        uint8_t _pinMiso;
-        uint8_t _pinMosi;
-        uint8_t _pinSs;
-        uint8_t _pinGdo2;
-
-        uint32_t _heaterAddr;
-
-
-        void spiStart(void);
-        void spiEnd(void);
-        uint8_t _packetSeq = 0;
 
     public:
 
@@ -43,6 +29,7 @@ class CC1101_Heater
 
         bool getState(uint8_t *state, uint8_t *power, float *voltage, int8_t *ambientTemp, int8_t *caseTemp, int8_t *setpoint, float *pumpFreq, uint8_t *autoMode, int16_t *rssi, uint32_t timeout);
         void sendCommand(uint8_t cmd, uint32_t addr, uint8_t numTransmits);
+        uint32_t findAddress(uint16_t timeout);
 
         /*  Radio */
         void initRadio();
@@ -59,6 +46,22 @@ class CC1101_Heater
         void writeStrobe(uint8_t addr);
 
         uint16_t crc16_2(char *buf, int len);
+
+    private:
+
+        uint8_t _pinSck;
+        uint8_t _pinMiso;
+        uint8_t _pinMosi;
+        uint8_t _pinSs;
+        uint8_t _pinGdo2;
+
+        uint32_t _heaterAddr;
+
+
+        void spiStart(void);
+        void spiEnd(void);
+        uint32_t parseAddress(char *buf);
+        uint8_t _packetSeq = 0;
 
 };
 

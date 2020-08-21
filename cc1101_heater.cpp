@@ -38,47 +38,14 @@ void CC1101_Heater::begin(uint32_t heaterAddr) {
 
 bool CC1101_Heater::getState(uint8_t *state, uint8_t *power, float *voltage, int8_t *ambientTemp, int8_t *caseTemp, int8_t *setpoint, float *pumpFreq, uint8_t *autoMode, int16_t *rssi, uint32_t timeout) {
 
-  unsigned long t = millis();
-  uint8_t rxLen;
+  char buf[24];
 
-  rxFlush();
-  rxEnable();
+  if (receivePacket(buf, timeout)) {
 
-  while (1) {
+    uint32_t address = parseAddress(buf);
 
-    if (millis() - t > timeout) return false;
+    if (address != _heaterAddr) return false;
 
-    // Wait for GDO2 assertion
-    while (!digitalRead(_pinGdo2)) { if (millis() - t > timeout) return false; }
-  
-    // Get number of bytes in RX FIFO
-    rxLen = writeReg(0xFB, 0xFF);
-
-    if (rxLen == 24) break;
-
-    // Flush RX FIFO
-    rxFlush();
-    rxEnable();
-
-  }
-
-  // Read RX FIFO
-  char buf[64];
-  rx(rxLen, buf); 
-
-  /*
-  Serial.printf("Received %d bytes\n", rxLen);
-  for (int i = 0; i < rxLen; i++) {
-     Serial.print(rx[i], HEX);
-     Serial.print(" ");     
-  }
-  Serial.println();
-  */
-  
-  rxFlush();
-
-  uint16_t crc = crc16_2(buf, 19);
-  if (crc == (buf[19] << 8) + buf[20]) {
     *state = buf[6];
     *power = buf[7];
     *voltage = buf[9] / 10.0f;
@@ -121,6 +88,77 @@ void CC1101_Heater::sendCommand(uint8_t cmd, uint32_t addr, uint8_t numTransmits
   /*
     while (cc1101_writeReg(0xF5, 0xFF) != 0x01) { yield(); } // Wait for idle state
   */
+
+}
+
+uint32_t CC1101_Heater::findAddress(uint16_t timeout) {
+
+  char buf[24];
+
+  if (receivePacket(buf, timeout)) {
+    uint32_t address = parseAddress(buf);
+    return address;
+  }
+
+  return 0;
+
+}
+
+uint32_t CC1101_Heater::parseAddress(char *buf) {
+  uint32_t address = 0;
+  address |= (buf[2] << 24);
+  address |= (buf[3] << 16);
+  address |= (buf[4] << 8);
+  address |= buf[5];
+  return address;
+}
+
+bool CC1101_Heater::receivePacket(char *bytes, uint16_t timeout) {
+
+  unsigned long t = millis();
+  uint8_t rxLen;
+
+  rxFlush();
+  rxEnable();
+
+  while (1) {
+
+    if (millis() - t > timeout) return false;
+
+    // Wait for GDO2 assertion
+    while (!digitalRead(_pinGdo2)) { if (millis() - t > timeout) return false; }
+  
+    // Get number of bytes in RX FIFO
+    rxLen = writeReg(0xFB, 0xFF);
+
+    if (rxLen == 24) break;
+
+    // Flush RX FIFO
+    rxFlush();
+    rxEnable();
+
+  }
+
+  // Read RX FIFO
+  rx(rxLen, bytes); 
+
+  /*
+  Serial.printf("Received %d bytes\n", rxLen);
+  for (int i = 0; i < rxLen; i++) {
+     Serial.print(rx[i], HEX);
+     Serial.print(" ");     
+  }
+  Serial.println();
+  */
+  
+  rxFlush();
+
+  uint16_t crc = crc16_2(buf, 19);
+  if (crc == (buf[19] << 8) + buf[20]) {
+    return true;
+  }
+
+  return false;
 
 }
 
