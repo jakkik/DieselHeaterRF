@@ -5,7 +5,7 @@
  * ---------------------------------
  * 
  * Simple class for Arduino to control an inexpensive Chinese diesel 
- * heater through 443 MHz RF by using a TI CC1101 transceiver.
+ * heater through 433 MHz RF by using a TI CC1101 transceiver.
  * Replicates the protocol used by the four button "red LCD remote" with
  * an OLED screen, and should probably work if your heater supports this 
  * type of remote controller.
