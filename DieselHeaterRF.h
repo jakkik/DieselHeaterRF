@@ -9,6 +9,16 @@
 #define HEATER_CMD_UP     0x3c
 #define HEATER_CMD_DOWN   0x3e
 
+#define HEATER_STATE_OFF            0x00
+#define HEATER_STATE_STARTUP        0x01
+#define HEATER_STATE_WARMING        0x02
+#define HEATER_STATE_WARMING_WAIT   0x03
+#define HEATER_STATE_PRE_RUN        0x04
+#define HEATER_STATE_RUNNING        0x05
+#define HEATER_STATE_SHUTDOWN       0x06
+#define HEATER_STATE_SHUTTING_DOWN  0x07
+#define HEATER_STATE_COOLING        0x08
+
 class DieselHeaterRF
 {
 
