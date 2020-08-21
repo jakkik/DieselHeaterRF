@@ -12,7 +12,6 @@
  * 
  */
 
-#include <SPI.h>
 #include "DieselHeaterRF.h"
 
 #define SCK_PIN   18
