@@ -18,6 +18,8 @@ Connect the SPI bus and GDO2 as follows:
 
 ### Features
 
+All features of the physical remote are available through the library.
+
 #### Get current state of the heater, including:
 * Heater power state
 * Current temperature setpoint
@@ -35,7 +37,8 @@ Connect the SPI bus and GDO2 as follows:
 * Pump frequency up / down (when in "manual", fixed pump freq. mode)
 * Operating mode auto / manual
 
-#### Pairing mode to find the heater address 
+#### Pairing mode
+* Find the heater address
 
 ### Background information:
 
