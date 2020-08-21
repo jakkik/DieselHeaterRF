@@ -21,7 +21,7 @@
 #define SS_PIN    5
 #define GDO2_PIN   4
 
-#define HEATER_POLL_INTERVAL  500
+#define HEATER_POLL_INTERVAL  4000
 
 uint32_t heaterAddr = 0x56d24eae;
 
@@ -62,7 +62,7 @@ void setup() {
       Serial.println("Failed to get the state");
     }
     
-    delay(HEATER_POLL_INTERVAL + 3000UL);
+    delay(HEATER_POLL_INTERVAL);
 
   }
   

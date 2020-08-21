@@ -60,6 +60,7 @@ class CC1101_Heater
 
         void spiStart(void);
         void spiEnd(void);
+        bool receivePacket(char *bytes, uint16_t timeout);
         uint32_t parseAddress(char *buf);
         uint8_t _packetSeq = 0;
 

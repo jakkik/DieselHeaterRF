@@ -153,8 +153,8 @@ bool CC1101_Heater::receivePacket(char *bytes, uint16_t timeout) {
   
   rxFlush();
 
-  uint16_t crc = crc16_2(buf, 19);
-  if (crc == (buf[19] << 8) + buf[20]) {
+  uint16_t crc = crc16_2(bytes, 19);
+  if (crc == (bytes[19] << 8) + bytes[20]) {
     return true;
   }
 
