@@ -44,6 +44,10 @@ void DieselHeaterRF::setAddress(uint32_t heaterAddr) {
   _heaterAddr = heaterAddr;
 }
 
+bool DieselHeaterRF::getState(heater_state_t *state) {
+  return getState(state, HEATER_RX_TIMEOUT);
+}
+
 bool DieselHeaterRF::getState(heater_state_t *state, uint32_t timeout) {
   return getState(&state->state, &state->power, &state->voltage, &state->ambientTemp, &state->caseTemp, &state->setpoint, &state->pumpFreq, &state->autoMode, &state->rssi, timeout);
 }

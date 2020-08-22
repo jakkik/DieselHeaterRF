@@ -25,7 +25,8 @@
 #define HEATER_STATE_SHUTTING_DOWN  0x07
 #define HEATER_STATE_COOLING        0x08
 
-#define HEATER_TX_REPEAT    5 // Number of times to re-transmit command packets
+#define HEATER_TX_REPEAT    10 // Number of times to re-transmit command packets
+#define HEATER_RX_TIMEOUT   5000
 
 typedef struct {
   uint8_t state       = 0;
@@ -67,6 +68,7 @@ class DieselHeaterRF
         void begin(uint32_t heaterAddr);
 
         void setAddress(uint32_t heaterAddr);
+        bool getState(heater_state_t *state);
         bool getState(heater_state_t *state, uint32_t timeout);
         bool getState(uint8_t *state, uint8_t *power, float *voltage, int8_t *ambientTemp, uint8_t *caseTemp, int8_t *setpoint, float *pumpFreq, uint8_t *autoMode, int16_t *rssi, uint32_t timeout);
         void sendCommand(uint8_t cmd);
