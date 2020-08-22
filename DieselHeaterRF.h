@@ -3,6 +3,12 @@
 
 #include <Arduino.h>
 
+#define HEATER_SCK_PIN   18
+#define HEATER_MISO_PIN  19
+#define HEATER_MOSI_PIN  23
+#define HEATER_SS_PIN    5
+#define HEATER_GDO2_PIN  4
+
 #define HEATER_CMD_WAKEUP 0x23
 #define HEATER_CMD_MODE   0x24
 #define HEATER_CMD_POWER  0x2b
@@ -19,12 +25,35 @@
 #define HEATER_STATE_SHUTTING_DOWN  0x07
 #define HEATER_STATE_COOLING        0x08
 
+struct heaterState
+{
+  uint8_t state       = 0;
+  uint8_t power       = 0;
+  float voltage       = 0;
+  int8_t ambientTemp  = 0;
+  uint8_t caseTemp    = 0;
+  int8_t setpoint     = 0;
+  uint8_t autoMode    = 0;
+  float pumpFreq      = 0;
+  int16_t rssi        = 0;
+};
+
+typedef struct heaterState HeaterState;
+
 class DieselHeaterRF
 {
 
     public:
 
-        explicit DieselHeaterRF(uint8_t sck, uint8_t miso, uint8_t mosi, uint8_t ss, uint8_t gdo2) { 
+        DieselHeaterRF() { 
+            _pinSck = HEATER_SCK_PIN;
+            _pinMiso = HEATER_MISO_PIN;
+            _pinMosi = HEATER_MOSI_PIN;
+            _pinSs = HEATER_SS_PIN;
+            _pinGdo2 = HEATER_GDO2_PIN;
+        }
+
+        DieselHeaterRF(uint8_t sck, uint8_t miso, uint8_t mosi, uint8_t ss, uint8_t gdo2) { 
             _pinSck = sck;
             _pinMiso = miso;
             _pinMosi = mosi;
@@ -37,6 +66,7 @@ class DieselHeaterRF
 
         void begin(uint32_t heaterAddr);
 
+        bool getState(struct heaterState *state, uint32_t timeout);
         bool getState(uint8_t *state, uint8_t *power, float *voltage, int8_t *ambientTemp, uint8_t *caseTemp, int8_t *setpoint, float *pumpFreq, uint8_t *autoMode, int16_t *rssi, uint32_t timeout);
         void sendCommand(uint8_t cmd, uint32_t addr, uint8_t numTransmits);
         uint32_t findAddress(uint16_t timeout);
