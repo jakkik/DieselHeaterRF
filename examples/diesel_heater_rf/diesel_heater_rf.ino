@@ -47,7 +47,7 @@ void loop() {
 
   heater.sendCommand(HEATER_CMD_WAKEUP);
 
-  if (heater.getState(&state, 1000)) {
+  if (heater.getState(&state)) {
     Serial.printf("State: %d, Power: %d, Voltage: %f, Ambient: %d, Case: %d, Setpoint: %d, PumpFreq: %f, Auto: %d, RSSI: %d\n", state.state, state.power, state.voltage, state.ambientTemp, state.caseTemp, state.setpoint, state.pumpFreq, state.autoMode, state.rssi); 
   } else {
     Serial.println("Failed to get the state");
