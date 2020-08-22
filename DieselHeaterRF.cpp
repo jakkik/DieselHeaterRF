@@ -18,7 +18,13 @@
 #include <SPI.h>
 #include "DieselHeaterRF.h"
 
+void DieselHeaterRF::begin() {
+  begin(0);
+}
+
 void DieselHeaterRF::begin(uint32_t heaterAddr) {
+
+  _heaterAddr = heaterAddr;
 
   pinMode(_pinSck, OUTPUT);
   pinMode(_pinMosi, OUTPUT);
@@ -28,12 +34,14 @@ void DieselHeaterRF::begin(uint32_t heaterAddr) {
   
   SPI.begin(_pinSck, _pinMiso, _pinMosi, _pinSs);
 
-  _heaterAddr = heaterAddr;
-
   delay(100);
 
   initRadio();
 
+}
+
+void DieselHeaterRF::setAddress(uint32_t heaterAddr) {
+  _heaterAddr = heaterAddr;
 }
 
 bool DieselHeaterRF::getState(heater_state_t *state, uint32_t timeout) {
@@ -66,8 +74,18 @@ bool DieselHeaterRF::getState(uint8_t *state, uint8_t *power, float *voltage, in
 
 }
 
+void DieselHeaterRF::sendCommand(uint8_t cmd) {
+  if (_heaterAddr == 0x00) return;
+  sendCommand(cmd, _heaterAddr, HEATER_TX_REPEAT);
+}
+
+void DieselHeaterRF::sendCommand(uint8_t cmd, uint32_t addr) {
+  sendCommand(cmd, addr, HEATER_TX_REPEAT);
+}
+
 void DieselHeaterRF::sendCommand(uint8_t cmd, uint32_t addr, uint8_t numTransmits) {
 
+  unsigned long t;
   char buf[10];
 
   buf[0] = 9; // Packet length, excl. self
@@ -86,12 +104,9 @@ void DieselHeaterRF::sendCommand(uint8_t cmd, uint32_t addr, uint8_t numTransmit
 
   for (int i = 0; i < numTransmits; i++) {
     txBurst(10, buf);
-    delay(16);
+    t = millis();
+    while (writeReg(0xF5, 0xFF) != 0x01) { delay(1); if (millis() - t > 100) { return; } } // Wait for idle state
   }
-
-  /*
-    while (cc1101_writeReg(0xF5, 0xFF) != 0x01) { yield(); } // Wait for idle state
-  */
 
 }
 
@@ -228,7 +243,6 @@ void DieselHeaterRF::txBurst(uint8_t len, char *bytes) {
     //cc1101_writeReg(0x3F, len);
     writeBurst(0x7F, len, bytes);
     writeStrobe(0x35); // STX
-    delay(16); 
 }
 
 void DieselHeaterRF::txFlush() {
