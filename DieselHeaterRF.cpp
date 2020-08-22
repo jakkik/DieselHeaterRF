@@ -26,7 +26,7 @@ void DieselHeaterRF::begin(uint32_t heaterAddr) {
   pinMode(_pinSs, OUTPUT);
   pinMode(_pinGdo2, INPUT);
   
-  SPI.begin(_pinSck, _pinMosi, _pinMiso, _pinSs);
+  SPI.begin(_pinSck, _pinMiso, _pinMosi, _pinSs);
 
   _heaterAddr = heaterAddr;
 
@@ -34,6 +34,10 @@ void DieselHeaterRF::begin(uint32_t heaterAddr) {
 
   initRadio();
 
+}
+
+bool DieselHeaterRF::getState(struct heaterState *state, uint32_t timeout) {
+  return getState(&state->state, &state->state, &state->voltage, &state->ambientTemp, &state->caseTemp, &state->setpoint, &state->pumpFreq, &state->autoMode, &state->rssi, timeout);
 }
 
 bool DieselHeaterRF::getState(uint8_t *state, uint8_t *power, float *voltage, int8_t *ambientTemp, uint8_t *caseTemp, int8_t *setpoint, float *pumpFreq, uint8_t *autoMode, int16_t *rssi, uint32_t timeout) {
