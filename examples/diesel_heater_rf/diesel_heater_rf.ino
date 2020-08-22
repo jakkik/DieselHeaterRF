@@ -14,27 +14,12 @@
 
 #include "DieselHeaterRF.h"
 
-#define SCK_PIN   18
-#define MISO_PIN  19
-#define MOSI_PIN  23
-#define SS_PIN    5
-#define GDO2_PIN   4
-
 #define HEATER_POLL_INTERVAL  4000
 
 uint32_t heaterAddr = 0x56d24eae; // Heater address is a 32 bit unsigned int. Use the findAddress() to get your heater's address.
 
-uint8_t sState       = 0;
-uint8_t sPower       = 0;
-float sVoltage       = 0;
-int8_t sAmbientTemp  = 0;
-uint8_t sCaseTemp    = 0;
-int8_t sSetpoint     = 0;
-uint8_t sAutoMode    = 0;
-float sPumpFreq      = 0;
-int16_t sRssi        = 0;
-
-DieselHeaterRF heater(SCK_PIN, MOSI_PIN, MISO_PIN, SS_PIN, GDO2_PIN);
+DieselHeaterRF heater;
+HeaterState state;
 
 void setup() {
 
@@ -42,7 +27,7 @@ void setup() {
 
   heater.begin(heaterAddr);
 
-  Serial.println("Started pairing, press and hold the DOWN button on the heater's LCD panel...");
+  Serial.println("Started pairing, press and hold the pairing button on the heater's LCD panel...");
 
   uint32_t address = heater.findAddress(60000UL);
 
@@ -62,8 +47,8 @@ void loop() {
 
   heater.sendCommand(HEATER_CMD_WAKEUP, heaterAddr, 10);
 
-  if (heater.getState(&sState, &sPower, &sVoltage, &sAmbientTemp, &sCaseTemp, &sSetpoint, &sPumpFreq, &sAutoMode, &sRssi, 1000)) {
-    Serial.printf("State: %d, Power: %d, Voltage: %f, Ambient: %d, Case: %d, Setpoint: %d, PumpFreq: %f, Auto: %d, RSSI: %d\n", sState, sPower, sVoltage, sAmbientTemp, sCaseTemp, sSetpoint, sPumpFreq, sAutoMode, sRssi); 
+  if (heater.getState(&state, 1000)) {
+    Serial.printf("State: %d, Power: %d, Voltage: %f, Ambient: %d, Case: %d, Setpoint: %d, PumpFreq: %f, Auto: %d, RSSI: %d\n", state.state, state.power, state.voltage, state.ambientTemp, state.caseTemp, state.setpoint, state.pumpFreq, state.autoMode, state.rssi); 
   } else {
     Serial.println("Failed to get the state");
   }
