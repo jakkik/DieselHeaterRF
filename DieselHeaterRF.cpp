@@ -37,7 +37,7 @@ void DieselHeaterRF::begin(uint32_t heaterAddr) {
 }
 
 bool DieselHeaterRF::getState(struct heaterState *state, uint32_t timeout) {
-  return getState(&state->state, &state->state, &state->voltage, &state->ambientTemp, &state->caseTemp, &state->setpoint, &state->pumpFreq, &state->autoMode, &state->rssi, timeout);
+  return getState(&state->state, &state->power, &state->voltage, &state->ambientTemp, &state->caseTemp, &state->setpoint, &state->pumpFreq, &state->autoMode, &state->rssi, timeout);
 }
 
 bool DieselHeaterRF::getState(uint8_t *state, uint8_t *power, float *voltage, int8_t *ambientTemp, uint8_t *caseTemp, int8_t *setpoint, float *pumpFreq, uint8_t *autoMode, int16_t *rssi, uint32_t timeout) {
