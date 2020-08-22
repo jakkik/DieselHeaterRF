@@ -71,7 +71,17 @@ class DieselHeaterRF
         void sendCommand(uint8_t cmd, uint32_t addr, uint8_t numTransmits);
         uint32_t findAddress(uint16_t timeout);
 
-        /*  Radio */
+    private:
+
+        uint8_t _pinSck;
+        uint8_t _pinMiso;
+        uint8_t _pinMosi;
+        uint8_t _pinSs;
+        uint8_t _pinGdo2;
+
+        uint32_t _heaterAddr;
+        uint8_t _packetSeq = 0;
+
         void initRadio();
 
         void txBurst(uint8_t len, char *bytes);
@@ -85,23 +95,13 @@ class DieselHeaterRF
         void writeBurst(uint8_t addr, uint8_t len, char *bytes);
         void writeStrobe(uint8_t addr);
 
-        uint16_t crc16_2(char *buf, int len);
-
-    private:
-
-        uint8_t _pinSck;
-        uint8_t _pinMiso;
-        uint8_t _pinMosi;
-        uint8_t _pinSs;
-        uint8_t _pinGdo2;
-
-        uint32_t _heaterAddr;
-
         void spiStart(void);
         void spiEnd(void);
+
         bool receivePacket(char *bytes, uint16_t timeout);
         uint32_t parseAddress(char *buf);
-        uint8_t _packetSeq = 0;
+
+        uint16_t crc16_2(char *buf, int len);
 
 };
 
