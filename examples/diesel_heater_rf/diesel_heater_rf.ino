@@ -19,7 +19,7 @@
 uint32_t heaterAddr = 0x56d24eae; // Heater address is a 32 bit unsigned int. Use the findAddress() to get your heater's address.
 
 DieselHeaterRF heater;
-HeaterState state;
+heater_state_t state;
 
 void setup() {
 

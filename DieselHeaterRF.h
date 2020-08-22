@@ -25,8 +25,7 @@
 #define HEATER_STATE_SHUTTING_DOWN  0x07
 #define HEATER_STATE_COOLING        0x08
 
-struct heaterState
-{
+typedef struct {
   uint8_t state       = 0;
   uint8_t power       = 0;
   float voltage       = 0;
@@ -36,9 +35,7 @@ struct heaterState
   uint8_t autoMode    = 0;
   float pumpFreq      = 0;
   int16_t rssi        = 0;
-};
-
-typedef struct heaterState HeaterState;
+} heater_state_t;
 
 class DieselHeaterRF
 {
@@ -66,7 +63,7 @@ class DieselHeaterRF
 
         void begin(uint32_t heaterAddr);
 
-        bool getState(struct heaterState *state, uint32_t timeout);
+        bool getState(heater_state_t *state, uint32_t timeout);
         bool getState(uint8_t *state, uint8_t *power, float *voltage, int8_t *ambientTemp, uint8_t *caseTemp, int8_t *setpoint, float *pumpFreq, uint8_t *autoMode, int16_t *rssi, uint32_t timeout);
         void sendCommand(uint8_t cmd, uint32_t addr, uint8_t numTransmits);
         uint32_t findAddress(uint16_t timeout);
