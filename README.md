@@ -2,6 +2,8 @@
 
 Replicates the protocol used by the four button "red LCD remote" with an OLED screen, and should probably work if your heater supports this type of remote controller.
 
+![Red remote](https://github.com/jakkik/DieselHeaterRF/blob/master/doc/red-remote.jpg?raw=true "Controllers with this type of remote are supported")
+
 You will need an ESP32 and TI CC1101 transceiver.
 
 Connect the SPI bus and GDO2 as follows:
