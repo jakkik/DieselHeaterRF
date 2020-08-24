@@ -11,6 +11,8 @@ Replicates the protocol used by the four button "red LCD remote" with an OLED sc
 
 Connect the SPI bus and GDO2 as follows:
 
+![Wiring diagram](https://github.com/jakkik/DieselHeaterRF/blob/master/doc/heateresp_bb.jpg?raw=true "Wiring diagram")
+
     ESP32         CC1101
     -----         ------
     4   <-------> GDO2
