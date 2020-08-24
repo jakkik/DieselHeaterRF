@@ -1,6 +1,6 @@
 ### Simple Arduino library for controlling and monitoring inexpensive, unbranded Chinese diesel heaters through 433 MHz RF by using a TI CC1101 transceiver.
 
-Replicates the protocol used by the four button "red LCD remote" with an OLED screen, and should probably work if your heater supports this type of remote controller.
+Library replicates the protocol used by the smaller four button remote with an OLED screen (see below), and should probably work if your heater supports this type of remote controller.
 
 ![Red remote](https://github.com/jakkik/DieselHeaterRF/blob/master/doc/red-remote.jpg?raw=true "Controllers with this type of remote are supported")
 
