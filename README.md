@@ -60,4 +60,8 @@ Required parts can be obtained for less than $ 10 USD. I used an Ebyte E07-M1101
 Link to E07-M1101S: https://www.aliexpress.com/item/32805699419.html
 (Note: this module has teeny-weeny PCB holes and dense 1.27 mm pitch, so if you want a more easily solderable breadboard-friendly 2.54 mm (.1 in) pitch version, you might want to choose a different module.)
 
+### Disclaimer
+
+Feel free to use this library as you please, but do it at your own risk!
+
 Happy hacking! 🤓
